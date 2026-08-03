@@ -31,5 +31,22 @@ form.addEventListener("submit", function (e) {
 // ======================
 
 function saveTodos() {
-    localStorage.setItem("todos", JSON.stringify("todos"));
+    localStorage.setItem("todos", JSON.stringify(todos));
 }
+
+// ======================
+// RENDERING
+// ======================
+
+function renderTodos() {
+    todoList.innerHTML = ""
+    const li = document.createElement('li');
+    li.className = "todo-item";
+    li.innerHTML = `<span class = "${todo.completed} ? "completed" : """>
+        ${todo.text} <button onclick = "deleteTodo(${todo.id})> Delete </button>`
+    li.querySelector("span").addEventListener("click", toggleComplete)
+    todoList.appendChild("li")
+
+}
+
+renderTodos()
