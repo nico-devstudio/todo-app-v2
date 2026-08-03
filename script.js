@@ -75,3 +75,16 @@ function toggleComplete(id) {
     saveTodos();
     renderTodos();
 }
+
+// ======================
+// Delete Todo
+// ======================
+
+function deleteTodo(id) {
+    todos = todos.filter(todo => {
+        return todo.id !== id
+    })
+
+    saveTodos();
+    renderTodos();
+}
