@@ -39,14 +39,39 @@ function saveTodos() {
 // ======================
 
 function renderTodos() {
-    todoList.innerHTML = ""
-    const li = document.createElement('li');
-    li.className = "todo-item";
-    li.innerHTML = `<span class = "${todo.completed} ? "completed" : """>
-        ${todo.text} <button onclick = "deleteTodo(${todo.id})> Delete </button>`
-    li.querySelector("span").addEventListener("click", toggleComplete)
-    todoList.appendChild("li")
+    todoList.innerHTML = "";
+
+    todos.forEach(todo => {
+        const li = document.createElement('li');
+        li.className = "todo-item";
+        li.innerHTML = `<span class = "${todo.completed ? "completed" : ""}">
+        ${todo.text} </span>
+         <button onclick = "deleteTodo(${todo.id})"> Delete </button>`
+        li.querySelector("span").addEventListener("click", () => {
+            toggleComplete(todo.id);
+        })
+
+        todoList.appendChild(li)
+    })
+
 
 }
 
 renderTodos()
+
+// ======================
+// TOGGLE COMPLETE
+// ======================
+
+function toggleComplete(id) {
+    todos = todos.map(todo => {
+        if (todo.id === id) {
+            todo.completed = !todo.completed
+        }
+
+        return todo
+    });
+
+    saveTodos();
+    renderTodos();
+}
