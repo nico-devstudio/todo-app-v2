@@ -13,10 +13,15 @@ let todos = JSON.parse(localStorage.getItem("todos")) || [];
 // ======================
 
 form.addEventListener("submit", function (e) {
-    e.preventDefault;
+    e.preventDefault();
+
+    const text = input.value.trim()
+
+    if (text === "") return
+
     const todo = {
         id: Date.now(),
-        text: input.value,
+        text,
         completed: false
     };
 
@@ -82,7 +87,7 @@ function toggleComplete(id) {
 
 function deleteTodo(id) {
     todos = todos.filter(todo => {
-        return todo.id !== id
+        return todo.id !== id;
     })
 
     saveTodos();
