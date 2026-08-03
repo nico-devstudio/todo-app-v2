@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=`, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 
@@ -14,7 +15,7 @@
             My Todo List
         </h1>
 
-        <form class="todo-form">
+        <form id="todo-form">
             <input type="text" class="todo-input" placeholder="Add a task...">
 
             <button>Add</button>
@@ -25,7 +26,13 @@
             <button data-filter="pending">Pending</button>
             <button data-filter="completed">Completed</button>
         </div>
+
+        <ul id="todo-list">
+
+        </ul>
     </main>
+
+    <script src="script.js"></script>
 
 </body>
 
