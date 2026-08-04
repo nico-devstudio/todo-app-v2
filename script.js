@@ -1,6 +1,7 @@
 const form = document.getElementById("todo-form")
 const input = document.getElementById("todo-input")
 const todoList = document.getElementById("todo-list")
+const filterButtons = document.querySelectorAll("[data-filter]");
 
 // ======================
 // STATE
@@ -40,13 +41,45 @@ function saveTodos() {
 }
 
 // ======================
+// FILTER State
+// ======================
+
+let currentFilter = "all";
+
+filterButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        currentFilter = button.dataset.filter;
+
+        renderTodos();
+
+    });
+
+});
+
+// ======================
 // RENDERING
 // ======================
 
 function renderTodos() {
     todoList.innerHTML = "";
 
-    todos.forEach(todo => {
+
+    let filteredTodos = todos.filter(todo => {
+
+        if (currentFilter === "completed") {
+            return todo.completed === true;
+        } else if (currentFilter === "pending") {
+            return todo.completed === false
+        }
+
+        return true;
+
+
+    })
+
+    filteredTodos.forEach(todo => {
         const li = document.createElement('li');
         li.className = "todo-item";
         li.innerHTML = `<span class = "${todo.completed ? "completed" : ""}">
@@ -93,3 +126,5 @@ function deleteTodo(id) {
     saveTodos();
     renderTodos();
 }
+
+
