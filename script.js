@@ -21,7 +21,8 @@ form.addEventListener("submit", function (e) {
     const todo = {
         id: Date.now(),
         text,
-        completed: false
+        completed: false,
+        editing: false,
     };
 
     todos.push(todo)
@@ -74,26 +75,34 @@ function renderTodos() {
 
 
         const li = document.createElement("li");
-        li.className = "todo-item"
-
-        li.innerHTML = `<span class = "${todo.completed ? "completed" : ""}">
+        li.className = "todo-item";
+        if (todo.editing === false) {
+            li.innerHTML = `<span class = "${todo.completed ? "completed" : ""}">
                     ${todo.text}  </span> 
                     <div>
                     <button class="edit-btn">Edit</button>
                    <button class="delete-btn">Delete</button>
-                   </div>`
+                   </div>`;
+            li.querySelector("span").addEventListener("click", function () {
+                toggleComplete(todo.id)
+            })
+            li.querySelector(".edit-btn").addEventListener("click", function () {
+                editTodo(todo.id)
+            })
+            li.querySelector(".delete-btn").addEventListener("click", function () {
+                deleteTodo(todo.id)
+            })
+        } else {
+            li.innerHTML = `<input value="${todo.text}">
+                    
+                    <button class="save-btn">Save</button>
+                  `;
 
-        li.querySelector("span").addEventListener("click", function () {
-            toggleComplete(todo.id)
-        })
-
-        li.querySelector(".edit-btn").addEventListener("click", function () {
-            editTodo(todo.id)
-        })
-
-        li.querySelector(".delete-btn").addEventListener("click", function () {
-            deleteTodo(todo.id)
-        })
+            let editInput = li.document.querySelector("input")
+            li.querySelector(".save-btn").addEventListener("click", function () {
+                todo.text = editInput.value;
+            })
+        }
 
         todoList.appendChild(li)
     });
@@ -131,18 +140,3 @@ function deleteTodo(id) {
 // ======================
 // Edit Todo
 // ======================
-
-function editTodo(id) {
-    const todo = todos.find(todo => todo.id === id)
-
-    const newText = prompt("Edit your task:", todo.text);
-
-    if (newText === null) return;
-
-    if (newText.trim() === "") return;
-
-    todo.text = newText.trim();
-
-    saveTodos();
-    renderTodos();
-}
