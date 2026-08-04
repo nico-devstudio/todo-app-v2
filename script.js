@@ -79,14 +79,19 @@ function renderTodos() {
         li.innerHTML = `<span class = "${todo.completed ? "completed" : ""}">
                     ${todo.text}  </span> 
                     <div>
-
-                   <button>Delete </button>`;
+                    <button class="edit-btn">Edit</button>
+                   <button class="delete-btn">Delete</button>
+                   </div>`
 
         li.querySelector("span").addEventListener("click", function () {
             toggleComplete(todo.id)
         })
 
-        li.querySelector("button").addEventListener("click", function () {
+        li.querySelector(".edit-btn").addEventListener("click", function () {
+            editTodo(todo.id)
+        })
+
+        li.querySelector(".delete-btn").addEventListener("click", function () {
             deleteTodo(todo.id)
         })
 
@@ -121,4 +126,23 @@ function deleteTodo(id) {
     })
     saveTodos()
     renderTodos()
+}
+
+// ======================
+// Edit Todo
+// ======================
+
+function editTodo(id) {
+    const todo = todos.find(todo => todo.id === id)
+
+    const newText = prompt("Edit your task:", todo.text);
+
+    if (newText === null) return;
+
+    if (newText.trim() === "") return;
+
+    todo.text = newText.trim();
+
+    saveTodos();
+    renderTodos();
 }
