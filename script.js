@@ -87,20 +87,41 @@ function renderTodos() {
                 toggleComplete(todo.id)
             })
             li.querySelector(".edit-btn").addEventListener("click", function () {
-                editTodo(todo.id)
+                startEdit(todo.id)
             })
             li.querySelector(".delete-btn").addEventListener("click", function () {
                 deleteTodo(todo.id)
             })
         } else {
             li.innerHTML = `<input value="${todo.text}">
-                    
                     <button class="save-btn">Save</button>
                   `;
 
-            let editInput = li.document.querySelector("input")
+            let editInput = li.querySelector("input")
             li.querySelector(".save-btn").addEventListener("click", function () {
-                todo.text = editInput.value;
+                const newText = editInput.value.trim();
+
+                if (newText === "") return;
+
+                todo.text = newText;
+                todo.editing = false;
+
+                saveTodos();
+                renderTodos();
+            })
+
+            editInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    const newText = editInput.value.trim();
+
+                    if (newText === "") return;
+
+                    todo.text = newText;
+                    todo.editing = false;
+
+                    saveTodos();
+                    renderTodos();
+                }
             })
         }
 
@@ -140,3 +161,18 @@ function deleteTodo(id) {
 // ======================
 // Edit Todo
 // ======================
+
+
+function startEdit(id) {
+    todos = todos.map(todo => {
+        if (todo.id === id) {
+            todo.editing = true;
+        }
+
+        return todo;
+    })
+
+    saveTodos();
+    renderTodos();
+}
+
