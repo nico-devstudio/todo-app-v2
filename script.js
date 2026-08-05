@@ -69,11 +69,43 @@ function renderTodos() {
 
 
     filteredTodos.forEach(() => {
-
-
         const li = document.createElement("li");
         li.className("todo-item");
-        li.innerHTML = ``
+        li.innerHTML = `<span class = "${todo.completed ? "completed" : ""}">
+                        ${todo.text} </span> 
+                        
+                        <div>
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                        `
+
+        li.querySelector("span").addEventListener("click", () => {
+            toggleComplete(todo.id)
+        })
+
+        li.querySelector(".delete-btn").addEventListener("click", () => {
+            deleteTodo(todo.id)
+        })
+    })
+}
+
+
+// ======================
+// Toggle Complete
+// ======================
+
+function toggleComplete(id) {
+    todos = todos.map((todo) => {
+        if (todo.id === id) {
+            todo.completed = !todo.completed
+        }
+        return todo
     })
 
+    saveTodos()
+    renderTodos()
 }
+
+// ======================
+// Delete To do
+// ======================
