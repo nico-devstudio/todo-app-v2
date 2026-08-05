@@ -99,28 +99,12 @@ function renderTodos() {
 
             let editInput = li.querySelector("input")
             li.querySelector(".save-btn").addEventListener("click", function () {
-                const newText = editInput.value.trim();
-
-                if (newText === "") return;
-
-                todo.text = newText;
-                todo.editing = false;
-
-                saveTodos();
-                renderTodos();
+                saveEdit(todo.id, editInput.value);
             })
 
             editInput.addEventListener("keydown", (e) => {
                 if (e.key === "Enter") {
-                    const newText = editInput.value.trim();
-
-                    if (newText === "") return;
-
-                    todo.text = newText;
-                    todo.editing = false;
-
-                    saveTodos();
-                    renderTodos();
+                    saveEdit(todo.id, editInput.value);
                 }
             })
         }
@@ -176,3 +160,26 @@ function startEdit(id) {
     renderTodos();
 }
 
+// ======================
+// Save Edit
+// ======================
+
+function saveEdit(id, newText) {
+
+    newText = newText.trim();
+
+    if (newText === "") return;
+
+    todos = todos.map(todo => {
+        if (todo.id === id) {
+
+            todo.text = newText;
+            todo.editing = false;
+        }
+        return todo;
+
+    })
+    saveTodos();
+    renderTodos();
+
+}
