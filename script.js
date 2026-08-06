@@ -47,6 +47,7 @@ let currentFilter = "all";
 filterButtons.forEach(button => {
     button.addEventListener("click", () => {
         currentFilter = button.dataset.filter
+        renderTodos();
     })
 })
 
@@ -68,26 +69,52 @@ function renderTodos() {
     })
 
 
-    filteredTodos.forEach(() => {
+    filteredTodos.forEach(todo => {
         const li = document.createElement("li");
-        li.className("todo-item");
-        li.innerHTML = `<span class = "${todo.completed ? "completed" : ""}">
+        li.className = "todo-item";
+
+        if (todo.editing === false) {
+            li.innerHTML = `<span class = "${todo.completed ? "completed" : ""}">
                         ${todo.text} </span> 
                         
                         <div>
                         <button class="edit-btn">Edit</button>
                         <button class="delete-btn">Delete</button>
+                        </div>
                         `
+            li.querySelector("span").addEventListener("click", () => {
+                toggleComplete(todo.id)
+            })
+            li.querySelector(".delete-btn").addEventListener("click", () => {
+                deleteTodo(todo.id)
+            })
+            li.querySelector(".edit-btn").addEventListener("click", () => {
+                todo.editing = !todo.editing;
+                renderTodos();
+                saveTodos();
+            })
+        } else {
+            li.innerHTML = `
+                        <input value = "${todo.text}">
+                        <button class="save-btn">Save</button>
+                        `;
+            const editInput = li.querySelector("input");
+            li.querySelector(".save-btn").addEventListener("click", () => {
+                saveEdit(todo.id, editInput.value.trim())
+            })
 
-        li.querySelector("span").addEventListener("click", () => {
-            toggleComplete(todo.id)
-        })
+            editInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter")
+                    saveEdit(todo.id, editInput.value.trim())
+            })
+        }
+        todoList.appendChild(li);
 
-        li.querySelector(".delete-btn").addEventListener("click", () => {
-            deleteTodo(todo.id)
-        })
     })
+
 }
+
+renderTodos();
 
 
 // ======================
@@ -95,7 +122,7 @@ function renderTodos() {
 // ======================
 
 function toggleComplete(id) {
-    todos = todos.map((todo) => {
+    todos = todos.map(todo => {
         if (todo.id === id) {
             todo.completed = !todo.completed
         }
@@ -109,3 +136,31 @@ function toggleComplete(id) {
 // ======================
 // Delete To do
 // ======================
+
+function deleteTodo(id) {
+    todos = todos.filter(todo => {
+        return todo.id !== id
+    })
+
+    saveTodos()
+    renderTodos()
+}
+
+// ======================
+// Save Edit
+// ======================
+
+function saveEdit(id, newText) {
+
+    todos = todos.map(todo => {
+        if (todo.id === id) {
+            if (newText === "") return todo;
+            todo.text = newText;
+            todo.editing = false;
+        }
+        return todo;
+    })
+
+    saveTodos();
+    renderTodos();
+}
