@@ -24,6 +24,10 @@ Users can create, update, complete, and delete tasks with data saved using Local
 
 ![Todo App Screenshot](./screenshot.png)
 
+## 🔗 Live Demo
+
+[View Live Demo](https://nico-devstudio.github.io/todo-app-v2/)
+
 ## ⚙️ How to Run
 
 1. Clone this repository

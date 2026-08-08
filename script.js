@@ -73,7 +73,7 @@ function renderTodos() {
         const li = document.createElement("li");
         li.className = "todo-item";
 
-        if (todo.editing === false) {
+        if (!todo.editing) {
             li.innerHTML = `<span class = "${todo.completed ? "completed" : ""}">
                         ${todo.text} </span> 
                         
@@ -89,7 +89,7 @@ function renderTodos() {
                 deleteTodo(todo.id)
             })
             li.querySelector(".edit-btn").addEventListener("click", () => {
-                todo.editing = !todo.editing;
+                todo.editing = true;
                 renderTodos();
                 saveTodos();
             })
